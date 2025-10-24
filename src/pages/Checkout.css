@@ -1,0 +1,167 @@
+/* Container */
+.order-success-container {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+/* Card */
+.order-success-card {
+  background: #fff;
+  max-width: 650px;
+  width: 100%;
+  padding: 50px 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 50px 10px #bfd7ff83;
+  text-align: center;
+}
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Icon wrapper */
+.icon-wrapper {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffffff, #94dd98);
+}
+
+/* Bounce animation */
+.bounce {
+  animation: bounce 1s ease infinite alternate;
+}
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Icon size */
+.success-icon {
+  width: 60px;
+}
+
+/* Typography */
+.title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.message {
+  font-size: 1rem;
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* Button */
+.btn-back {
+  display: inline-block;
+  background: #343a40;
+  color: #fff;
+  padding: 10px 40px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-back:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Title */
+.card h4 {
+  font-size: 1.25rem;
+  letter-spacing: 0.3px;
+}
+
+/* Address Card Base */
+.address-card {
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+.address-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Selected Address */
+.address-selected {
+  border: 2px solid #0d6efd !important;
+  box-shadow: 0 6px 14px rgba(13, 110, 253, 0.15) !important;
+}
+
+.address-selected h5,
+.address-selected p {
+  color: #0d6efd;
+}
+
+/* Icons */
+.address-card i {
+  color: #0d6efd;
+}
+
+/* Summary Box */
+.selected-summary {
+  background-color: #f8faff;
+  border: 1px solid #e1e8f0;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.selected-summary h6 {
+  margin-bottom: 6px;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.selected-summary p {
+  margin: 0;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

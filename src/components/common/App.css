@@ -1,0 +1,75 @@
+/* ========================= */
+/* MAIN CAROUSEL STYLING */
+/* ========================= */
+
+.custom-carousel img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover; /*full banner look on desktop */
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.custom-carousel img:hover {
+  transform: scale(1.02);
+}
+
+/* Smaller carousel controls on mobile */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ========================= */
+/* RESPONSIVE BEHAVIOR */
+/* ========================= */
+
+/* Tablet Screens */
+@media (max-width: 992px) {
+  .custom-carousel img {
+    height: 340px;
+    object-fit: cover;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  .custom-carousel img {
+    height: 260px;
+    object-fit: contain !important; /* ✅ no cropping */
+    padding: 0 6px; /* adds slight margin to avoid side crop */
+  }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .custom-carousel img {
+    height: 200px;
+    border-radius: 8px;
+    object-fit: contain !important;
+  }
+}
+
+/* ========================= */
+/* PRODUCT CARD STYLING */
+/* ========================= */
+
+.product-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.product-card img {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  width: 100%;
+  object-fit: contain;
+}
+

@@ -1,0 +1,169 @@
+/* === CART PAGE STYLING === */
+.pageLoadAnimation {
+  animation: fadeIn 0.4s ease-in;
+}
+
+/* Fade-in animation for page load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === CART ITEM STYLING === */
+.cart-item-card {
+  transition: all 0.25s ease;
+  border-radius: 15px !important;
+  overflow: hidden;
+  background: #fff;
+}
+
+.cart-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.04)
+}
+
+/* Image */
+.cart-item-card img {
+  transition: transform 0.3s ease;
+  border-radius: 10px;
+}
+
+.cart-item-card:hover img {
+  transform: scale(1.04);
+}
+
+.product-total {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+
+/* === BUTTON STYLING === */
+/* Neutral, modern aesthetic button styles */
+.cart-item-card button {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  padding: 0.4rem 0.9rem;
+  border: none;
+}
+
+.cart-item-card button:hover {
+  transform: translateY(-2px);
+}
+
+/* Minus / Plus buttons */
+.btn-qty {
+  background-color: #f2f3f5;
+  color: #333;
+}
+.btn-qty:hover {
+  background-color: #e1e2e4;
+}
+
+/* Wishlist button */
+.btn-wishlist {
+  background-color: #ece8ff;
+  color: #5a4fcf;
+}
+.btn-wishlist:hover {
+  background-color: #e0dcfa;
+}
+
+/* Remove button */
+.btn-remove {
+  background-color: #ffe9e9;
+  color: #d13b3b;
+}
+.btn-remove:hover {
+  background-color: #ffd7d7;
+}
+
+
+/* === PRICE BOX === */
+.price-box {
+  background: linear-gradient(135deg, #f4f7fb, #e2e8f0);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+  transition: all 0.3s ease;
+  animation: slideUp 0.5s ease-in-out;
+}
+
+/* Slide up animation for price box */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.price-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* PRICE BOX HEADING */
+.price-box h6 {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* PRICE BOX AMOUNTS */
+.price-box span {
+  font-size: 0.95rem;
+}
+
+/* "Place Order" button */
+.price-box .btn-dark {
+  border-radius: 12px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.price-box .btn-dark:hover {
+  background: #343a40e6;
+  transform: scale(1.02);
+}
+
+/* === SHOP WITH CONFIDENCE SECTION === */
+.shop-confidence {
+  border-radius: 12px;
+  background: #fff;
+  margin-top: 1rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6c757d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* === STICKY PRICE BOX BEHAVIOR === */
+@media (min-width: 992px) {
+  .sticky-top-custom {
+    position: sticky;
+    top: 90px;
+  }
+}
+
+/* Disable sticky on small screens */
+@media (max-width: 991px) {
+  .sticky-top-custom {
+    position: static !important;
+  }
+
+  .price-box {
+    margin-top: 2rem;
+  }
+}

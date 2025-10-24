@@ -1,0 +1,48 @@
+/* Floating Wishlist Button Wrapper */
+.wishlist-floating {
+  position: absolute;
+  top: -15px; /* Floating above the card */
+  right: -10px;
+  z-index: 10;
+}
+
+/* Glass Effect Button */
+.wishlist-glass {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.15); /* Transparent Glass Effect */
+  backdrop-filter: blur(8px); /* Frosted Glass Blur */
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #000; /* Icon color */
+  font-size: 20px;
+  transition: all 0.25s ease-in-out;
+  transform: scale(1) translateY(0); /*base state */
+}
+
+/* Hover Effect */
+.wishlist-glass:hover {
+  background: #ff6e58; 
+  color: #fff;
+  transform: scale(1.1) translateY(-2px); 
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Keyframes for pop animation */
+@keyframes wishlist-pop {
+  0%   { transform: scale(1) translateY(0); }
+  40%  { transform: scale(1.25) translateY(-2px); } /* pop + hover shift */
+  60%  { transform: scale(0.9) translateY(-1px); }  /* settle */
+  100% { transform: scale(1.1) translateY(-2px); }  /* end aligned with hover */
+}
+
+/* Active / Filled Heart State */
+.wishlist-glass.active {
+  background: #fff; /* custom color */
+  color: #ff6e58;   /* filled icon color */
+  animation: wishlist-pop 0.35s ease-in-out;
+}

@@ -1,0 +1,143 @@
+/* ===== Base Navbar ===== */
+.mega-navbar {
+  position: relative;
+  background-color: #ffffff;
+  z-index: 1000; /* dropdown shows above everything */
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  overflow: visible !important; /* Prevent dropdown cut off */
+}
+
+/* No extra scrolls on desktop */
+.mega-navbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Category Title */
+.category-title {
+  color: black;
+  transition: color 0.3s ease;
+  font-weight: 400;
+}
+.category-title:hover {
+  color: #61afd3;
+}
+
+/* Dropdown Parent */
+.mega-dropdown {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+.mega-dropdown-trigger {
+  cursor: pointer;
+}
+
+/* Dropdown Content */
+.mega-dropdown-content {
+  position: absolute;
+  top: 100%; /* directly below trigger */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 12px 18px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  min-width: 200px;
+  white-space: nowrap;
+}
+
+.mega-dropdown:hover .mega-dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Dropdown links */
+.mega-dropdown-content ul li {
+  margin-bottom: 8px;
+}
+.mega-dropdown-content ul li a {
+  color: #333;
+  transition: color 0.3s ease;
+}
+.mega-dropdown-content ul li a:hover {
+  color: #61afd3;
+}
+
+/* Category Images */
+.mega-navbar img {
+  height: 38px;
+  transition: transform 0.3s ease;
+  margin-bottom: 6px;
+}
+.mega-navbar img:hover {
+  transform: scale(1.1);
+}
+
+/* ===== Mobile Version ===== */
+.category-mobile {
+  background-color: #ffffff;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.scrollable-row {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-pill {
+  border: none;
+  background: #f2f6f9;
+  border-radius: 50px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.category-pill img {
+  height: 28px;
+}
+
+.category-pill:hover {
+  background-color: #e6f0fa;
+}
+
+.mobile-submenu {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+/* ===== Fix for Empty Space ===== */
+.beauty-category {
+  gap: 2rem !important;
+}
+
+@media (max-width: 768px) {
+  .category-pill span {
+    font-size: 0.9rem;
+  }
+  .mega-navbar {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-pill {
+    padding: 6px 10px;
+  }
+}

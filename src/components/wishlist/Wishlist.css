@@ -1,0 +1,80 @@
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Wishlist card hover */
+.wishlist-card {
+  transition: all 0.25s ease;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+/* Image hover */
+.wishlist-card img {
+  transition: transform 0.3s ease;
+  /* border-radius: 10px; */
+}
+
+.wishlist-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Icons hover effect */
+.iconsPng img {
+  transition: transform 0.25s ease, filter 0.25s ease;
+  cursor: pointer;
+}
+
+.iconsPng img:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 6px #76767666);
+}
+
+/* Stock indicators */
+.stock-indicator {
+  border-radius: 50px;
+  padding: 0.25rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.70rem;
+  display: inline-block;
+  min-width: 85px;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.stock-in {
+  background: #e6f4ea;
+  color: #2c7a2c;
+  border: 1px solid #2c7a2c;
+}
+
+.stock-low {
+  background: #fff7e6;
+  color: #b37f00;
+  border: 1px solid #b37f00;
+}
+
+.stock-out {
+  background: #fdeaea;
+  color: #c92c2c;
+  border: 1px solid #c92c2c;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .iconsPng img { height: 28px !important; }
+  .stock-indicator {
+    font-size: 0.75rem;
+    min-width: 70px;
+    padding: 0.2rem 0.5rem;
+  }
+}
+
