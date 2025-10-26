@@ -6,16 +6,31 @@ import { Link } from "react-router-dom";
 import "./Checkout.css";
 import Footer from "../components/common/Footer";
 
+const BASE_URL = "https://clyora-app-backend.vercel.app"
+
 function CheckoutMain() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
   const { setCart, allAddressList } = useProductContext();
   const [orderSuccessfull, setOrderSuccessfull] = useState(false);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(
     allAddressList.findIndex((adrs) => adrs.isDefault)
   );
 
-  function handleOrderSuccessfull() {
-    setOrderSuccessfull(true);
-    setCart([]);
+  async function handleOrderSuccessfull() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    try {
+      await fetch(`${BASE_URL}/cart`, {
+        method: "DELETE",
+      });
+
+      setCart([]);
+      setOrderSuccessfull(true);
+
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
   }
 
   function handleDeliveryAddress(index) {
@@ -27,11 +42,10 @@ function CheckoutMain() {
   return (
     <main className="pb-5">
       <div
-        className={`pageLoadAnimation ${
-          orderSuccessfull
+        className={`pageLoadAnimation ${orderSuccessfull
             ? "container-fluid"
             : "container py-3"
-        }`}
+          }`}
       >
         <br />
         {orderSuccessfull ? (
@@ -70,9 +84,8 @@ function CheckoutMain() {
                 allAddressList.map((adrs, index) => (
                   <div
                     key={index}
-                    className={`address-card card border-0 mb-3 shadow-sm rounded-4 ${
-                      selectedAddressIndex === index ? "address-selected" : ""
-                    }`}
+                    className={`address-card card border-0 mb-3 shadow-sm rounded-4 ${selectedAddressIndex === index ? "address-selected" : ""
+                      }`}
                     onClick={() => handleDeliveryAddress(index)}
                   >
                     <div className="card-body">
@@ -166,10 +179,10 @@ function CheckoutMain() {
 
 export default function Checkout() {
   return (
-    <div style={{ backgroundColor: "#f7faff",  minHeight: "100vh"}}>
+    <div style={{ backgroundColor: "#f7faff", minHeight: "100vh" }}>
       <Header />
       <CheckoutMain />
-      <Footer/>
+      <Footer />
     </div>
   );
 }

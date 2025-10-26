@@ -5,6 +5,8 @@ import { BeatLoader } from "react-spinners";
 import { useProductContext } from "../../contexts/ProductContext";
 
 const HomeMain = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
   const apiUrlAllProducts = "https://dummyjson.com/products";
   const { data, loading, error } = useFetch(apiUrlAllProducts);
 

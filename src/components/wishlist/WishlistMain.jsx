@@ -1,12 +1,22 @@
 import { useProductContext } from "../../contexts/ProductContext";
 import { Link } from "react-router-dom";
 
+const BASE_URL = "https://clyora-app-backend.vercel.app"
+
 export default function WishlistMain() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
   const { wishlist, setWishlist, handleAddToCart } = useProductContext();
 
-  function handleRemoveProduct(prod) {
-    let updatedWishlist = wishlist.filter((item) => item.id !== prod.id);
-    setWishlist(updatedWishlist); // State changed => automatically re-render
+  async function handleRemoveProduct(prod) {
+    try {
+      await fetch(`${BASE_URL}/wishlist/${prod.id}`, {
+        method: "DELETE"
+      })
+      setWishlist(prev => prev.filter(item => item.id !== prod.id)) // State changed => automatically re-render
+    } catch (error) {
+      console.log("Failed to remove product:", error); 
+    }
   }  
 
   function getDiscountedPrice(prod) {

@@ -5,39 +5,63 @@ import "./Cart.css";
 import PriceDetailsBox from "../components/common/PriceDetailsBox";
 import Footer from "../components/common/Footer";
 
+const BASE_URL = "https://clyora-app-backend.vercel.app"
+
 function CartMain() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
   const { cart, setCart, wishlist, setWishlist, allAddressList } =
     useProductContext();
 
   // Left section items logic:
   // ---- ---- ---- ----
 
-  function handleCartItemsQuantity(prodId, selectedBtn) {
-    setCart((prev) =>
-      prev.map((itm) => {
-        if (itm.id === prodId) {
-          let newQuantity = itm.quantity;
-          if (selectedBtn === "increase") newQuantity++;
-          if (selectedBtn === "decrease" && newQuantity > 1) newQuantity--;
+  async function handleCartItemsQuantity(prodId, selectedBtn) {
+  const item = cart.find((itm) => itm.id === prodId);
+  if (!item) return;
 
-          return { ...itm, quantity: newQuantity };
-        }
+  let newQuantity = item.quantity;
+  if (selectedBtn === "increase") newQuantity++;
+  if (selectedBtn === "decrease" && newQuantity > 1) newQuantity--;
 
-        return itm;
-      })
-    );
+  try {
+    const res = await fetch(`${BASE_URL}/cart/${prodId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quantity: newQuantity }),
+    });
+
+    if (res.ok) {
+      setCart((prev) =>
+        prev.map((itm) =>
+          itm.id === prodId ? { ...itm, quantity: newQuantity } : itm
+        )
+      );
+    }
+  } catch (err) {
+    console.error("Error updating quantity:", err);
   }
+}
 
-  function removeFromCart(prodId) {
+
+  async function removeFromCart(prodId) {
+    await fetch(`${BASE_URL}/cart/${prodId}`, {method: "DELETE"})
     setCart((prevItems) => prevItems.filter((itm) => itm.id !== prodId));
   }
 
-  function moveToWishlist(prod) {
+  async function moveToWishlist(prod) {
     const exist = wishlist.find((itm) => itm.id === prod.id);
     if (exist) {
       alert("Already saved in your Wishlist❤️");
     } else {
-      setWishlist((prevList) => [...prevList, { ...prod, quantity: 0 }]);
+      // Add to backend wishlist
+      const res = await fetch(`${BASE_URL}/wishlist`, {
+        method: "POST",
+        headers: {"Content-Type" : "application/json"},
+        body: JSON.stringify(prod)
+      })
+      const data = await res.json()
+      setWishlist((prevList) => [...prevList, data.newProduct]);
       removeFromCart(prod.id);
     }
   }
@@ -57,9 +81,18 @@ function CartMain() {
 
     if (!defaultAddress) {
       return (
+        <>
         <p className="mb-0 text-muted">
           No default address selected. Please add one.
-        </p>
+        <Link
+              to="/userProfile"
+              className="badge text-bg-light border border-dark text-decoration-none float-end"
+              style={{ whiteSpace: "nowrap"}}
+              >
+              Saved Address
+        </Link>
+                </p>
+        </>
       );
     }
 
