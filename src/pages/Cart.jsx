@@ -4,76 +4,76 @@ import { useProductContext } from "../contexts/ProductContext";
 import "./Cart.css";
 import PriceDetailsBox from "../components/common/PriceDetailsBox";
 import Footer from "../components/common/Footer";
+import { toast } from 'react-toastify';
 
-const BASE_URL = "https://clyora-app-backend.vercel.app"
+
+const BASE_URL = "https://clyora-app-backend.vercel.app";
 
 function CartMain() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const { cart, setCart, wishlist, setWishlist, allAddressList } =
-    useProductContext();
+  const {
+    cart,
+    setCart,
+    getDiscountedPrice,
+    getEachProductTotal,
+    wishlist,
+    setWishlist,
+    allAddressList,
+  } = useProductContext();
 
   // Left section items logic:
   // ---- ---- ---- ----
 
   async function handleCartItemsQuantity(prodId, selectedBtn) {
-  const item = cart.find((itm) => itm.id === prodId);
-  if (!item) return;
+    const item = cart.find((itm) => itm.id === prodId);
+    if (!item) return;
 
-  let newQuantity = item.quantity;
-  if (selectedBtn === "increase") newQuantity++;
-  if (selectedBtn === "decrease" && newQuantity > 1) newQuantity--;
+    let newQuantity = item.quantity;
+    if (selectedBtn === "increase") newQuantity++;
+    if (selectedBtn === "decrease" && newQuantity > 1) newQuantity--;
 
-  try {
-    const res = await fetch(`${BASE_URL}/cart/${prodId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ quantity: newQuantity }),
-    });
+    try {
+      const res = await fetch(`${BASE_URL}/cart/${prodId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: newQuantity }),
+      });
 
-    if (res.ok) {
-      setCart((prev) =>
-        prev.map((itm) =>
-          itm.id === prodId ? { ...itm, quantity: newQuantity } : itm
-        )
-      );
+      if (res.ok) {
+        setCart((prev) =>
+          prev.map((itm) =>
+            itm.id === prodId ? { ...itm, quantity: newQuantity } : itm
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Error updating quantity:", err);
     }
-  } catch (err) {
-    console.error("Error updating quantity:", err);
   }
-}
-
 
   async function removeFromCart(prodId) {
-    await fetch(`${BASE_URL}/cart/${prodId}`, {method: "DELETE"})
+    toast.info("Removed from Cart 🗑️")
+    await fetch(`${BASE_URL}/cart/${prodId}`, { method: "DELETE" });
     setCart((prevItems) => prevItems.filter((itm) => itm.id !== prodId));
   }
 
   async function moveToWishlist(prod) {
     const exist = wishlist.find((itm) => itm.id === prod.id);
     if (exist) {
-      alert("Already saved in your Wishlist❤️");
+      toast.info("Already saved in your Wishlist❤️");
     } else {
       // Add to backend wishlist
+      toast.success("Added to Wishlist❤️")
       const res = await fetch(`${BASE_URL}/wishlist`, {
         method: "POST",
-        headers: {"Content-Type" : "application/json"},
-        body: JSON.stringify(prod)
-      })
-      const data = await res.json()
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(prod),
+      });
+      const data = await res.json();
       setWishlist((prevList) => [...prevList, data.newProduct]);
       removeFromCart(prod.id);
     }
-  }
-
-  function getDiscountedPrice(prod) {
-    return (prod.price - (prod.price * prod.discountPercentage) / 100).toFixed(
-      1
-    );
-  }
-
-  function getEachProductTotal(prod) {
-    return (prod.quantity * Number(getDiscountedPrice(prod))).toFixed(1);
   }
 
   function renderDefaultAddress(allAddressList) {
@@ -82,16 +82,16 @@ function CartMain() {
     if (!defaultAddress) {
       return (
         <>
-        <p className="mb-0 text-muted">
-          No default address selected. Please add one.
-        <Link
+          <p className="mb-0 text-muted">
+            No default address selected. Please add one.
+            <Link
               to="/userProfile"
               className="badge text-bg-light border border-dark text-decoration-none float-end"
-              style={{ whiteSpace: "nowrap"}}
-              >
+              style={{ whiteSpace: "nowrap" }}
+            >
               Saved Address
-        </Link>
-                </p>
+            </Link>
+          </p>
         </>
       );
     }
@@ -113,7 +113,7 @@ function CartMain() {
             <Link
               to="/userProfile"
               className="badge text-bg-light border border-dark text-decoration-none"
-              style={{ whiteSpace: "nowrap"}}
+              style={{ whiteSpace: "nowrap" }}
             >
               Change Default
             </Link>
@@ -141,7 +141,7 @@ function CartMain() {
             <p className="fs-5 my-4">
               Looks like you haven't made your choice yet 💭
             </p>
-            <Link className="btn btn-dark" to={"/wishlist"}>
+            <Link className="btn btn-dark rounded-3" to={"/wishlist"} style={{minWidth: "220px"}}>
               Browse Wishlist
             </Link>
           </div>
@@ -150,7 +150,7 @@ function CartMain() {
             {/* Left section - Cart items */}
             <div className="col-lg-8 col-md-7">
               {/* Delivery Status */}
-              <div className="card border p-3 mb-3 bg-body-tertiary rounded-4 ">
+              <div className="card border p-3 mb-3 bg-body-tertiary rounded-4">
                 {renderDefaultAddress(allAddressList)}
               </div>
 
@@ -173,13 +173,13 @@ function CartMain() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="col-12 col-sm-5 text-center text-sm-start">
+                    <div className="col-12 col-sm-5 text-center text-sm-start mb-3 mb-sm-0">
                       <Link
                         to={`/products/productDetails/${prod.id}`}
                         className="text-decoration-none text-dark"
                       >
                         <h5 className="mb-1 fw-normal">{prod.title}</h5>
-                        <span className="fw-semibold me-2 ">
+                        <span className="fw-semibold me-2">
                           ${getDiscountedPrice(prod)}
                         </span>
                         <small>
@@ -191,14 +191,15 @@ function CartMain() {
                           </span>
                         </small>
                         <h5 className="product-total mt-3">
-                          Total ${getEachProductTotal(prod)}
+                          Subtotal ${getEachProductTotal(prod)}
                         </h5>
                       </Link>
                     </div>
 
                     {/* Controls and Buttons */}
-                    <div className="col-12 col-sm-4 text-center mt-3 mt-sm-0">
-                      <div className="d-flex justify-content-center align-items-center flex-wrap gap-2">
+                    <div className="col-12 col-sm-4 text-center">
+                      {/* Quantity controls (top) */}
+                      <div className="d-flex justify-content-center align-items-center flex-wrap gap-2 mb-2">
                         <button
                           className="btn btn-qty btn-sm"
                           onClick={() =>
@@ -218,6 +219,10 @@ function CartMain() {
                         >
                           +
                         </button>
+                      </div>
+
+                      {/* Wishlist & Remove (below) */}
+                      <div className="d-flex justify-content-center align-items-center flex-wrap gap-2">
                         <button
                           className="btn btn-wishlist btn-sm"
                           onClick={() => moveToWishlist(prod)}
@@ -244,7 +249,8 @@ function CartMain() {
           </div>
         )}
 
-        <br /><br />
+        <br />
+        <br />
       </div>
     </main>
   );
@@ -255,7 +261,7 @@ export default function Cart() {
     <div style={{ backgroundColor: "#f7faff" }}>
       <Header />
       <CartMain />
-      <Footer/>
+      <Footer />
     </div>
   );
 }

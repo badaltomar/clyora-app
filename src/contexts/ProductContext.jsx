@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 
 const ProductContext = createContext();
 
@@ -65,12 +66,14 @@ export function ProductProvider({ children }) {
 
       if (exists) {
         // Remove from the wishlist / DB:
+        toast.info("Removed from Wishlist❤️")
         await fetch(`${BASE_URL}/wishlist/${prod.id}`, { method: "DELETE" });
         setWishlist((prev) => prev.filter((item) => item.id !== prod.id));
 
         return;
       }
       // Add to wishlist / DB:
+      toast.success("Added to Wishlist❤️")
       const res = await fetch(`${BASE_URL}/wishlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -79,6 +82,7 @@ export function ProductProvider({ children }) {
       const data = await res.json();
       setWishlist((prev) => [...prev, data.newProduct]);
     } catch (error) {
+      toast.error("Error updating wishlist")
       console.log("Error updating wishlist:", error);
     }
   }
@@ -87,10 +91,11 @@ export function ProductProvider({ children }) {
     const added = cart.find((item) => item.id === prod.id);
 
     if (added) {
-      alert("Product already added ✅, Checkout your cart! 🛒✨");
+      toast.info("Product already added ✅, Checkout your cart! 🛒✨");
       return;
     }
-
+    
+    toast.success("Added to Cart 🛒")
     const res = await fetch(`${BASE_URL}/cart`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -102,9 +107,20 @@ export function ProductProvider({ children }) {
     const addedIntoWishlist = wishlist.find((item) => item.id === prod.id);
     if (addedIntoWishlist) {
       // Remove from wishlist / DB:
+      toast.info("Removed from Wishlist❤️")
       await fetch(`${BASE_URL}/wishlist/${prod.id}`, { method: "DELETE" });
       setWishlist((prev) => prev.filter((itm) => itm.id !== prod.id));
     }
+  }
+
+  function getDiscountedPrice(prod) {
+    return (prod.price - (prod.price * prod.discountPercentage) / 100).toFixed(
+      1
+    );
+  }
+
+  function getEachProductTotal(prod) {
+    return (prod.quantity * Number(getDiscountedPrice(prod))).toFixed(1);
   }
 
   // Add or Update address:
@@ -112,6 +128,7 @@ export function ProductProvider({ children }) {
     try {
       if (editId) {
         // Update existing address
+        toast("Address updated successfully 📍");
         const res = await fetch(`${BASE_URL}/address/${editId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -123,7 +140,6 @@ export function ProductProvider({ children }) {
           console.log(data.message || "Failed to update address");
         }
 
-          alert("Address updated successfully 📍");
 
         setAllAddressList((prev) =>
           prev.map((adrs) =>
@@ -133,6 +149,7 @@ export function ProductProvider({ children }) {
         return true; // indicate success
       } else {
         // Add new address
+        toast("New Address saved successfully ✅");
         const res = await fetch(`${BASE_URL}/address`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -142,13 +159,12 @@ export function ProductProvider({ children }) {
         if (res.status === 409) {
           // Duplicate address
           const data = await res.json();
-          alert("Address already exist, Change area or street");
+          toast.error("Address already exist, Change area or street 📍");
           throw new Error(data.message);
         }
 
         const data = await res.json();
         setAllAddressList((prev) => [...prev, data.newAddress]);
-          alert("New Address saved successfully ✅");
 
         return true;
       }
@@ -161,6 +177,7 @@ export function ProductProvider({ children }) {
   // Delete address
   async function handleDeleteAddress(id) {
     try {
+      toast.info("Address deleted Successfully 🗑️")
       await fetch(`${BASE_URL}/address/${id}`, { method: "DELETE" });
       setAllAddressList((prevList) =>
         prevList.filter((adrs) => adrs._id !== id)
@@ -181,6 +198,8 @@ export function ProductProvider({ children }) {
         cart,
         setCart,
         handleAddToCart,
+        getDiscountedPrice,
+        getEachProductTotal,
         allAddressList,
         setAllAddressList,
         handleSaveAddress,

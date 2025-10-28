@@ -7,6 +7,7 @@ import useFetch from "../useFetch";
 import { Link, useParams } from "react-router-dom";
 import { useProductContext } from "../contexts/ProductContext";
 import Footer from "../components/common/Footer";
+import { toast } from "react-toastify";
 
 const ProductListMain = () => {
   const { wishlist, handleWishlistProducts, handleAddToCart, searchInput } =
@@ -18,7 +19,7 @@ const ProductListMain = () => {
   let apiUrl =
     categoryType !== undefined
       ? `https://dummyjson.com/products/category/${categoryType}`
-      : "https://dummyjson.com/products";
+      : "https://dummyjson.com/products?limit=0";
 
   const { data, loading, error } = useFetch(apiUrl);
 
@@ -116,6 +117,7 @@ const ProductListMain = () => {
   //---- ---- ----
 
   const handleFiltersReset = () => {
+    toast("Filters Cleared")
     setPriceRange(100000000);
     setSelectedCategories([]);
     setRating(null);
@@ -131,181 +133,313 @@ const ProductListMain = () => {
     <main className="container-fluid ">
       <div className="row">
         {/* {Filters Side Bar} */}
-
         <div className="col-md-2 p-3 pt-4 bg-body-tertiary">
-          <form style={{ userSelect: "none" }}>
-            <div className="d-flex justify-content-between">
-              <h5>Filters</h5>
-              <button
-                type="reset"
-                onClick={handleFiltersReset}
-                className="btn btn-sm btn-dark rounded-3"
-              >
-                Clear
-              </button>
-            </div>
-            <br />
-            <h6>Price</h6>
-            <label
-              htmlFor="priceRange"
-              className="d-flex justify-content-between text-muted"
+          {/* Toggle button visible only on mobile */}
+          <div className="d-md-none mb-3 text-center">
+            <button
+              className="btn btn-outline-dark w-100"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#filterCollapse"
+              aria-expanded="false"
+              aria-controls="filterCollapse"
             >
-              <div>$50</div>
-              <div>$200</div>
-              <div>$350</div>
-              <div>$500</div>
-            </label>
-            <input
-              type="range"
-              name="priceRange"
-              id="priceRange"
-              className="form-range"
-              step={150}
-              min={50}
-              max={500}
-              onChange={handlePriceRange}
-            />
-            <br />
-            <br />
-            {categoryType === undefined && (
-              <>
-                <h6>Category</h6>
-                <div className="form-check">
-                  <input
-                    onChange={handleCategory}
-                    className="form-check-input"
-                    type="checkbox"
-                    value="beauty"
-                    id="beauty"
-                  />
-                  <label className="form-check-label" htmlFor="beauty">
-                    Beauty
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    onChange={handleCategory}
-                    className="form-check-input"
-                    type="checkbox"
-                    value="fragrances"
-                    id="fragrances"
-                  />
-                  <label className="form-check-label" htmlFor="fragrances">
-                    Fragrances
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    onChange={handleCategory}
-                    className="form-check-input"
-                    type="checkbox"
-                    value="skin-care"
-                    id="skincare"
-                  />
-                  <label className="form-check-label" htmlFor="skincare">
-                    Skin Care
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    onChange={handleCategory}
-                    className="form-check-input"
-                    type="checkbox"
-                    value="sunglasses"
-                    id="sunglasses"
-                  />
-                  <label className="form-check-label" htmlFor="sunglasses">
-                    Sunglasses
-                  </label>
-                </div>
+              Filters
+            </button>
+          </div>
 
-                <br />
-              </>
-            )}
+          {/* Collapsible filter section */}
+          <div className="collapse d-md-block" id="filterCollapse">
+            <form style={{ userSelect: "none" }}>
+              <div className="d-flex justify-content-between">
+                <h5>Filters</h5>
+                <button
+                  type="reset"
+                  onClick={handleFiltersReset}
+                  className="btn btn-sm btn-dark rounded-3"
+                >
+                  Clear
+                </button>
+              </div>
+              <br />
+              <h6>Price</h6>
+              <label
+                htmlFor="priceRange"
+                className="d-flex justify-content-between text-muted"
+              >
+                <div>$50</div>
+                <div>$200</div>
+                <div>$350</div>
+                <div>$500</div>
+              </label>
+              <input
+                type="range"
+                name="priceRange"
+                id="priceRange"
+                className="form-range"
+                step={150}
+                min={50}
+                max={500}
+                onChange={handlePriceRange}
+              />
+              <br />
+              <br />
+              {categoryType === undefined && (
+                <>
+                  <h6>Category</h6>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="beauty"
+                      id="beauty"
+                    />
+                    <label className="form-check-label" htmlFor="beauty">
+                      Beauty
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="fragrances"
+                      id="fragrances"
+                    />
+                    <label className="form-check-label" htmlFor="fragrances">
+                      Fragrances
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="mens-shirts"
+                      id="mens-shirts"
+                    />
+                    <label className="form-check-label" htmlFor="mens-shirts">
+                      Men's Shirts
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="mens-shoes"
+                      id="mens-shoes"
+                    />
+                    <label className="form-check-label" htmlFor="mens-shoes">
+                      Men's Shoes
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="mens-watches"
+                      id="mens-watches"
+                    />
+                    <label className="form-check-label" htmlFor="mens-watches">
+                      Men's Watches
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="skin-care"
+                      id="skincare"
+                    />
+                    <label className="form-check-label" htmlFor="skincare">
+                      Skin Care
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="sunglasses"
+                      id="sunglasses"
+                    />
+                    <label className="form-check-label" htmlFor="sunglasses">
+                      Sunglasses
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="tops"
+                      id="tops"
+                    />
+                    <label className="form-check-label" htmlFor="tops">
+                      Women's Tops
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="womens-bags"
+                      id="womens-bags"
+                    />
+                    <label className="form-check-label" htmlFor="womens-bags">
+                      Women's Bags
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="womens-dresses"
+                      id="womens-dresses"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="womens-dresses"
+                    >
+                      Women's Dresses
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="womens-jewellery"
+                      id="womens-jewellery"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="womens-jewellery"
+                    >
+                      Women's Jewellery
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="womens-shoes"
+                      id="womens-shoes"
+                    />
+                    <label className="form-check-label" htmlFor="womens-shoes">
+                      Women's Shoes
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      onChange={handleCategory}
+                      className="form-check-input"
+                      type="checkbox"
+                      value="womens-watches"
+                      id="womens-watches"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="womens-watches"
+                    >
+                      Women's Watches
+                    </label>
+                  </div>
+                  <br />
+                </>
+              )}
 
-            <h6>Rating</h6>
-            <div className="form-check">
-              <input
-                onChange={handleRating}
-                className="form-check-input"
-                type="radio"
-                name="ratingsRadioBtn"
-                id="4plus"
-                value={4}
-              />
-              <label className="form-check-label" htmlFor="4plus">
-                4 Stars & above
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                onChange={handleRating}
-                className="form-check-input"
-                type="radio"
-                name="ratingsRadioBtn"
-                id="3plus"
-                value={3}
-              />
-              <label className="form-check-label" htmlFor="3plus">
-                3 Stars & above
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                onChange={handleRating}
-                className="form-check-input"
-                type="radio"
-                name="ratingsRadioBtn"
-                id="2plus"
-                value={2}
-              />
-              <label className="form-check-label" htmlFor="2plus">
-                2 Stars & above
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                onChange={handleRating}
-                className="form-check-input"
-                type="radio"
-                name="ratingsRadioBtn"
-                id="1plus"
-                value={1}
-              />
-              <label className="form-check-label" htmlFor="1plus">
-                1 Stars & above
-              </label>
-            </div>
+              <h6>Rating</h6>
+              <div className="form-check">
+                <input
+                  onChange={handleRating}
+                  className="form-check-input"
+                  type="radio"
+                  name="ratingsRadioBtn"
+                  id="4plus"
+                  value={4}
+                />
+                <label className="form-check-label" htmlFor="4plus">
+                  4 Stars & above
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  onChange={handleRating}
+                  className="form-check-input"
+                  type="radio"
+                  name="ratingsRadioBtn"
+                  id="3plus"
+                  value={3}
+                />
+                <label className="form-check-label" htmlFor="3plus">
+                  3 Stars & above
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  onChange={handleRating}
+                  className="form-check-input"
+                  type="radio"
+                  name="ratingsRadioBtn"
+                  id="2plus"
+                  value={2}
+                />
+                <label className="form-check-label" htmlFor="2plus">
+                  2 Stars & above
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  onChange={handleRating}
+                  className="form-check-input"
+                  type="radio"
+                  name="ratingsRadioBtn"
+                  id="1plus"
+                  value={1}
+                />
+                <label className="form-check-label" htmlFor="1plus">
+                  1 Stars & above
+                </label>
+              </div>
 
-            <br />
+              <br />
 
-            <h6>Sort By</h6>
-            <div className="form-check">
-              <input
-                onChange={handleSorting}
-                className="form-check-input"
-                type="radio"
-                name="sortRadioBtns"
-                id="lowToHigh"
-              />
-              <label className="form-check-label" htmlFor="lowToHigh">
-                Price Low to High
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                onChange={handleSorting}
-                className="form-check-input"
-                type="radio"
-                name="sortRadioBtns"
-                id="highToLow"
-              />
-              <label className="form-check-label" htmlFor="highToLow">
-                Price High to Low
-              </label>
-            </div>
-            <br />
-          </form>
+              <h6>Sort By</h6>
+              <div className="form-check">
+                <input
+                  onChange={handleSorting}
+                  className="form-check-input"
+                  type="radio"
+                  name="sortRadioBtns"
+                  id="lowToHigh"
+                />
+                <label className="form-check-label" htmlFor="lowToHigh">
+                  Price Low to High
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  onChange={handleSorting}
+                  className="form-check-input"
+                  type="radio"
+                  name="sortRadioBtns"
+                  id="highToLow"
+                />
+                <label className="form-check-label" htmlFor="highToLow">
+                  Price High to Low
+                </label>
+              </div>
+              <br />
+            </form>
+          </div>
         </div>
 
         {/* {Products Listing} */}
@@ -405,7 +539,9 @@ const ProductListMain = () => {
                           </div>
 
                           <div className="card-body px-1">
-                            <p className="card-title fw-semibold">{prod.title}</p>
+                            <p className="card-title fw-semibold">
+                              {prod.title}
+                            </p>
                             <span className="fw-semibold">
                               $
                               {(

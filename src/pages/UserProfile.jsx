@@ -7,9 +7,12 @@ import Footer from "../components/common/Footer";
 const BASE_URL = "https://clyora-app-backend.vercel.app";
 
 function UserProfileMain() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-  const { allAddressList, setAllAddressList, handleSaveAddress, handleDeleteAddress } = useProductContext();
+  const {
+    allAddressList,
+    setAllAddressList,
+    handleSaveAddress,
+    handleDeleteAddress,
+  } = useProductContext();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -156,10 +159,50 @@ function UserProfileMain() {
                     required
                   >
                     <option value="">Select State</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                    <option value="Uttarakhand">Uttarakhand</option>
-                    <option value="Haryana">Haryana</option>
+                    {[
+                      "Andaman and Nicobar Islands",
+                      "Andhra Pradesh",
+                      "Arunachal Pradesh",
+                      "Assam",
+                      "Bihar",
+                      "Chandigarh",
+                      "Chhattisgarh",
+                      "Dadra and Nagar Haveli and Daman and Diu",
+                      "Delhi",
+                      "Goa",
+                      "Gujarat",
+                      "Haryana",
+                      "Himachal Pradesh",
+                      "Jammu and Kashmir",
+                      "Jharkhand",
+                      "Karnataka",
+                      "Kerala",
+                      "Ladakh",
+                      "Lakshadweep",
+                      "Madhya Pradesh",
+                      "Maharashtra",
+                      "Manipur",
+                      "Meghalaya",
+                      "Mizoram",
+                      "Nagaland",
+                      "Odisha",
+                      "Puducherry",
+                      "Punjab",
+                      "Rajasthan",
+                      "Sikkim",
+                      "Tamil Nadu",
+                      "Telangana",
+                      "Tripura",
+                      "Uttar Pradesh",
+                      "Uttarakhand",
+                      "West Bengal",
+                    ]
+                      .sort()
+                      .map((st) => (
+                        <option key={st} value={st}>
+                          {st}
+                        </option>
+                      ))}
                   </select>
                   <br />
 
@@ -271,8 +314,9 @@ function UserProfileMain() {
               }`}
             >
               <div className="card-body">
-                <div className="d-flex justify-content-between align-items-start">
-                  <div>
+                {/* parent stack switches to column on small screens */}
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2">
+                  <div className="flex-grow-1">
                     <h5 className="mb-1">{adrs.name}</h5>
                     <p className="mb-1">📍{adrs.address}</p>
                     <p className="mb-1">
@@ -284,7 +328,8 @@ function UserProfileMain() {
                     </small>
                   </div>
 
-                  <div>
+                  {/* button group container becomes row on md+, column on mobile */}
+                  <div className="d-flex flex-wrap flex-md-column justify-content-start align-items-start align-items-md-end gap-2 mt-2 mt-md-0">
                     {adrs.isDefault ? (
                       <span className="badge bg-success">Default</span>
                     ) : (
@@ -295,14 +340,16 @@ function UserProfileMain() {
                         Set as Default
                       </button>
                     )}
+
                     <button
-                      className={`btn btn-sm rounded-3 mx-3 ${
+                      className={`btn btn-sm rounded-3 ${
                         adrs._id === editId ? "btn-dark" : "btn-outline-dark"
                       }`}
                       onClick={() => handleEditAddress(adrs._id)}
                     >
                       Edit
                     </button>
+
                     <button
                       className="btn btn-outline-danger btn-sm rounded-3"
                       onClick={() => handleDeleteAddress(adrs._id)}

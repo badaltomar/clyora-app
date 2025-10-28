@@ -1,5 +1,7 @@
 import { useProductContext } from "../../contexts/ProductContext";
 import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 
 const BASE_URL = "https://clyora-app-backend.vercel.app"
 
@@ -10,6 +12,7 @@ export default function WishlistMain() {
 
   async function handleRemoveProduct(prod) {
     try {
+      toast.info("Removed from Wishlist❤️")
       await fetch(`${BASE_URL}/wishlist/${prod.id}`, {
         method: "DELETE"
       })
@@ -35,7 +38,7 @@ export default function WishlistMain() {
           <p className="fs-5 my-4">
             Your wishlist is empty, Let's fill it with amazing products! 🥳✨
           </p>
-          <Link className="btn btn-dark" to={"/products"}>Explore</Link>
+          <Link className="btn btn-dark rounded-3" to={"/products"} style={{minWidth: "220px"}}>Explore</Link>
         </div>
       ) : (
         <div className="row pageLoadAnimation">

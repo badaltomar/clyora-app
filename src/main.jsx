@@ -12,6 +12,9 @@ import Checkout from './pages/Checkout.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import { ProductProvider } from './contexts/ProductContext.jsx'
 
+import { Flip, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 
 const router = createBrowserRouter([
   {
@@ -53,6 +56,17 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ProductProvider>
       <RouterProvider router={router} />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+        transition={Flip}
+      />
     </ProductProvider>
   </StrictMode>,
 )

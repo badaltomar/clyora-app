@@ -40,6 +40,8 @@ const HomeMain = () => {
           id="carouselExampleAutoplaying"
           className="carousel carousel-dark slide pb-5"
           data-bs-ride="carousel"
+          data-bs-touch="true"
+          data-bs-interval="3000"
         >
           <div className="carousel-inner custom-carousel">
             <div className="carousel-item">

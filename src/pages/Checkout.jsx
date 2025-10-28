@@ -6,12 +6,18 @@ import { Link } from "react-router-dom";
 import "./Checkout.css";
 import Footer from "../components/common/Footer";
 
-const BASE_URL = "https://clyora-app-backend.vercel.app"
+const BASE_URL = "https://clyora-app-backend.vercel.app";
 
 function CheckoutMain() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const { setCart, allAddressList } = useProductContext();
+  const {
+    cart,
+    setCart,
+    allAddressList,
+    getDiscountedPrice,
+    getEachProductTotal,
+  } = useProductContext();
   const [orderSuccessfull, setOrderSuccessfull] = useState(false);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(
     allAddressList.findIndex((adrs) => adrs.isDefault)
@@ -27,7 +33,6 @@ function CheckoutMain() {
 
       setCart([]);
       setOrderSuccessfull(true);
-
     } catch (error) {
       console.error("Error clearing cart:", error);
     }
@@ -42,10 +47,9 @@ function CheckoutMain() {
   return (
     <main className="pb-5">
       <div
-        className={`pageLoadAnimation ${orderSuccessfull
-            ? "container-fluid"
-            : "container py-3"
-          }`}
+        className={`pageLoadAnimation ${
+          orderSuccessfull ? "container-fluid" : "container py-3"
+        }`}
       >
         <br />
         {orderSuccessfull ? (
@@ -84,8 +88,9 @@ function CheckoutMain() {
                 allAddressList.map((adrs, index) => (
                   <div
                     key={index}
-                    className={`address-card card border-0 mb-3 shadow-sm rounded-4 ${selectedAddressIndex === index ? "address-selected" : ""
-                      }`}
+                    className={`address-card card border-0 mb-3 shadow-sm rounded-4 ${
+                      selectedAddressIndex === index ? "address-selected" : ""
+                    }`}
                     onClick={() => handleDeliveryAddress(index)}
                   >
                     <div className="card-body">
@@ -143,6 +148,71 @@ function CheckoutMain() {
                   </Link>
                 </div>
               )}
+
+              {/* Order Summary: */}
+              <div className="card shadow-sm p-3 mb-3 border-0 rounded-4">
+                <h4 className="fw-bold mb-0 text-dark border-bottom pb-2">
+                  Order Summary
+                </h4>
+                <p className="mb-0 fw-bold text-muted py-1">
+                  Total {cart.length === 1 && "Item" || "Items"}: {cart.length}
+                </p>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 col-md-7">
+                  {cart.map((prod) => (
+                    <div
+                      key={prod.id}
+                      className="cart-item-card border rounded border-secondary shadow-sm p-2 mb-3 bg-white"
+                    >
+                      <div className="row align-items-center">
+                        {/* Product Image */}
+                        <div className="col-12 col-sm-3 text-center mb-3 mb-sm-0">
+                          <div>
+                            <img
+                              src={prod.thumbnail}
+                              alt={prod.title}
+                              className="img-fluid rounded bg-light"
+                              style={{ maxHeight: "120px", objectFit: "cover" }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Product Info */}
+                        <div className="col-12 col-sm-5 text-center text-sm-start">
+                          <div className="text-dark">
+                            <h5 className="mb-1 fw-normal">{prod.title}</h5>
+                            <span className="fw-semibold me-2 ">
+                              ${getDiscountedPrice(prod)}
+                            </span>
+                            <small>
+                              <span className="text-muted text-decoration-line-through me-2">
+                                ${prod.price.toFixed(1)}
+                              </span>
+                              <span className="fw-semibold text-success">
+                                {prod.discountPercentage.toFixed(1)}% Off
+                              </span>
+                            </small>
+                          </div>
+                        </div>
+
+                        {/* Quantity & Total */}
+                        <div className="col-12 col-sm-4 text-center mt-3 mt-sm-0">
+                          <div>
+                            <h5 className="product-total text-primary opacity-75">
+                              Quantity: {prod.quantity}{" "}
+                              {prod.quantity === 1 ? "(item)" : "(items)"}
+                            </h5>
+                            <h5 className="product-total mt-2 text-muted">
+                              Subtotal ${getEachProductTotal(prod)}
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Right section - Price summary */}
@@ -172,7 +242,8 @@ function CheckoutMain() {
           </div>
         )}
       </div>
-      <br /><br />
+      <br />
+      <br />
     </main>
   );
 }
